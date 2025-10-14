@@ -3,7 +3,8 @@
 ## 環境構築
 Dockerビルド
 1. git clone @github.com:k-sakata1988/check-test__contact-form.git
-2. docker-compose up -d --build
+2. DockerDesktopアプリを起動
+3. docker-compose up -d --build
 
 Laravel環境構築
 1. docker-compose exec php bash
@@ -21,7 +22,7 @@ Laravel環境構築
 - Docker 28.3.2 /Docker Compose 3.8
 
 ## ER図
-![ER図]()
+![ER図](./er.drawio.png)
 
 ## URL
 - 開発環境: http://localhost/
