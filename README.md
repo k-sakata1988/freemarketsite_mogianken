@@ -16,7 +16,7 @@ Laravel環境構築
 
 ## 使用技術
 - PHP 8.1.33
-- Laravel 10.49.0
+- Laravel 8.83.8
 - MySQL 8.0.26
 - Nginx 1.21
 - Docker 28.3.2 /Docker Compose 3.8
