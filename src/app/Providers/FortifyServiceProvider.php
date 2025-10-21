@@ -2,43 +2,65 @@
 
 namespace App\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\User; // ←これを追加！
+use Illuminate\Support\Facades\Hash; // ←これも必要！
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use App\Http\Responses\RegisterResponse;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
+use App\Actions\Fortify\CreateNewUser;
+use App\Actions\Fortify\ResetUserPassword;
+use App\Actions\Fortify\UpdateUserPassword;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register():void
+    public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(){
+    public function boot()
+    {
         Fortify::createUsersUsing(CreateNewUser::class);
-             Fortify::registerView(function () {
-                return view('auth.register');
-            });
+        $this->app->singleton(
+            RegisterResponseContract::class,
+            RegisterResponse::class
+        );
+
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
 
         Fortify::loginView(function () {
             return view('auth.login');
         });
 
+        Fortify::authenticateUsing(function (Request $request) {
+            $request->validate([
+                'email' => ['required', 'string', 'email'],
+                'password' => ['required', 'string'],
+            ], [
+                'email.required' => 'メールアドレスを入力してください。',
+                'email.email' => '有効なメールアドレス形式で入力してください。',
+                'password.required' => 'パスワードを入力してください。',
+            ]);
+            $user = \App\Models\User::where('email', $request->email)->first();
+            if (! $user || ! \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'email' => 'ログイン情報が登録されていません。',
+                ]);
+            }
+
+            return $user;
+        });
+
+
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
-
             return Limit::perMinute(10)->by($email . $request->ip());
         });
     }

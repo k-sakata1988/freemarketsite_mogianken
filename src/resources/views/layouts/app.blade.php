@@ -18,6 +18,7 @@
                 </a>
                 <nav>
                     <ul class="header-nav">
+                        @auth
                         <li class="header-nav__item">
                             <form class="form" action="/logout" method="post">
                                 @csrf
@@ -27,6 +28,20 @@
                         <li class="header-nav__item">
                             <a class="header-nav__link" href="/mypage">マイページ</a>
                         </li>
+                        @endauth
+                        @yield('css')
+                        <!-- これをindex.blade.phpの＠cssに入れる。@guest
+                        <li class="header-nav__item">
+                            {{-- ログインページのURLに置き換えてください --}}
+                            <a class="header-nav__link" href="/login">ログイン</a>
+                        </li>
+                        {{-- 新規登録ボタンも必要な場合は、ここに含めてください --}}
+                        {{-- 
+                        <li class="header-nav__item">
+                            <a class="header-nav__link" href="/register">新規登録</a>
+                        </li>
+                        --}}
+                        @endguest -->
                     </ul>
                 </nav>
             </div>

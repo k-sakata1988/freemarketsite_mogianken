@@ -15,5 +15,7 @@ use App\Http\Controllers\LogoutController;
 |
 */
 
-Route::get('/',[AuthController::class,'index']);
+Route::middleware('auth')->group(function () {
+    Route::get('/', [AuthController::class, 'index']);
+});
 Route::post('/logout', LogoutController::class)->name('logout');
