@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,10 @@ use App\Http\Controllers\LogoutController;
 |
 */
 
+Route::get('/', [ItemController::class, 'index'])->name('top');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/', [AuthController::class, 'index']);
+    Route::get('/?tab=mylist', [AuthController::class, 'index'])->name('mylist');
+    Route::post('/logout', LogoutController::class)->name('logout');
 });
-Route::post('/logout', LogoutController::class)->name('logout');
+Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
