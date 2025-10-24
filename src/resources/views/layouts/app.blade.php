@@ -23,8 +23,7 @@
                         <img src="{{ asset('images/logo.svg') }}" alt="Coachtech Logo">
                     </a>
                     <form class="header__search-form" action="{{ route('items.search') }}" method="GET">
-                        <input type="text" name="keyword" class="header__search-input" placeholder="商品を検索">
-                        <button type="submit" class="header__search-button">検索</button>
+                        <input type="text" name="keyword" class="header__search-input" placeholder="なにをお探しですか？">
                     </form>
                     <nav>
                         <ul class="header-nav">

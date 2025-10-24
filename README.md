@@ -2,7 +2,7 @@
 
 ## 環境構築
 Dockerビルド
-1. git clone @github.com:k-sakata1988/check-test__contact-form.git
+1. git clone git@github.com:k-sakata1988/freemarketsite_mogianken.git
 2. DockerDesktopアプリを起動
 3. docker-compose up -d --build
 

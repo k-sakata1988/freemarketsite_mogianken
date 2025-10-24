@@ -34,4 +34,8 @@ class Item extends Model
     public function purchase(){
         return $this->hasOne(Purchase::class);
     }
+    public function scopeRecommended($query)
+    {
+    return $query->where('is_recommended', true);
+    }
 }

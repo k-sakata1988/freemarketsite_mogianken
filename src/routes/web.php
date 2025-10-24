@@ -1,25 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LogoutController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
-Route::get('/', [ItemController::class, 'index'])->name('top');
+Route::get('/items/tab/{type}', [ItemController::class, 'fetchTabItems'])->name('items.tab');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/?tab=mylist', [AuthController::class, 'index'])->name('mylist');
-    Route::post('/logout', LogoutController::class)->name('logout');
-});
 Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
+
+Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
+
+Route::get('/sell', [ItemController::class, 'create'])->middleware('auth')->name('items.create');
+
+Route::post('/logout', LogoutController::class)->name('logout');
